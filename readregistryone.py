@@ -18,12 +18,13 @@ if system32 == 'x86' and not system64:
 elif system32 == 'amd64':
     registryElements = {winreg.KEY_WOW64_32KEY, winreg.KEY_WOW64_64KEY}  # if system architecture is 64 bits
     """This approach will ensure that the registry access, no matter if it's a 32 or 64 bit process, 
-    will access the 64 bit registry view (KEY_WOW64_64KEY) and he registry access, no matter if it's a 32 or 64 bit process, 
+    will access the 64 bit registry view (KEY_WOW64_64KEY) and the registry access, no matter if it's a 32 or 64 bit process, 
     will access the 32 bit registry view (KEY_WOW64_32KEY)."""
 else:
     raise Exception("Can't process architecture type: {}".format(system32))
 
 for element in registryElements:
+    print("Writing registry elements for {} bits process".format(element))
     key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", 0,
                          winreg.KEY_READ | element)
     for i in range(0, winreg.QueryInfoKey(key)[0]):
